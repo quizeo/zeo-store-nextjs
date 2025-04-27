@@ -1,13 +1,12 @@
-import { Button } from "@/components/ui/button";
+import FeaturedProducts from "@/components/home/FeaturedProducts";
+import Hero from "@/components/home/Hero";
 
 const HomePage = () => {
   return (
-    <div>
-      <h1>Homepage</h1>
-      <Button variant="outline" size="lg" className="capitalize m-8">
-        Default Button
-      </Button>
-    </div>
+    <>
+      <Hero />
+      <FeaturedProducts />
+    </>
   );
 };
 
