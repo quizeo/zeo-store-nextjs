@@ -3,7 +3,6 @@ import { Input } from "../ui/input";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from "use-debounce";
 import { useState, useEffect } from "react";
-import { log } from "console";
 
 const NavSearch = () => {
   const searchParams = useSearchParams();
@@ -23,10 +22,11 @@ const NavSearch = () => {
   }, 300);
 
   useEffect(() => {
-    if (!searchParams.get("search")) {
+    const searchValue = searchParams.get("search");
+    if (!searchValue) {
       setSearch("");
     }
-  }, [searchParams.get("search")]);
+  }, [searchParams]);
 
   return (
     <Input
