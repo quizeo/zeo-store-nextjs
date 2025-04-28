@@ -1,6 +1,5 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   /* config options here */
   typescript: {
     // This bypasses TypeScript errors during build
@@ -14,10 +13,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
   eslint: {
-    dirs: ["pages", "utils"], // Only run ESLint on the 'pages' and 'utils' directories during production builds (next build)
+    dirs: ["pages", "utils"], // Only run ESLint on specified directories
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
