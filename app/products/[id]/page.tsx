@@ -7,33 +7,31 @@ import AddToCart from "@/components/single-product/AddToCart";
 import ProductRating from "@/components/single-product/ProductRating";
 import { Suspense } from "react";
 
-// Remove the custom PageProps type that's causing issues
-// Let Next.js infer the correct types
-
+// ✅ Remove the manual typing
 export default async function SingleProductPage({
   params,
 }: {
   params: { id: string };
 }) {
-  // Simple approach: get the ID and render directly
   return (
-    <Suspense fallback={<div>Loading product...</div>}>
-      <ProductContent id={params.id} />
-    </Suspense>
+    <section>
+      <Suspense fallback={<div>Loading product...</div>}>
+        <ProductContent id={params.id} />
+      </Suspense>
+    </section>
   );
 }
 
-// Keep your content component
 async function ProductContent({ id }: { id: string }) {
   const product = await fetchSingleProduct(id);
   const { name, image, company, price, description } = product;
   const formattedPrice = formatCurrency(price);
 
   return (
-    <section>
+    <div>
       <BreadCrumbs name={name} />
       <div className="mt-6 grid gap-y-8 lg:grid-cols-2 lg:gap-x-16">
-        {/* Image first col */}
+        {/* Image section */}
         <div className="relative h-[400px] md:h-[500px] lg:h-full">
           <Image
             src={image}
@@ -44,7 +42,8 @@ async function ProductContent({ id }: { id: string }) {
             className="w-full rounded object-cover"
           />
         </div>
-        {/* product info second col */}
+
+        {/* Product info section */}
         <div>
           <div className="flex gap-x-8 items-center">
             <h1 className="capitalize text-3xl font-bold">{name}</h1>
@@ -59,6 +58,6 @@ async function ProductContent({ id }: { id: string }) {
           <AddToCart productId={id} />
         </div>
       </div>
-    </section>
+    </div>
   );
 }
