@@ -7,26 +7,23 @@ import AddToCart from "@/components/single-product/AddToCart";
 import ProductRating from "@/components/single-product/ProductRating";
 import { Suspense } from "react";
 
-// Add the correct type definition for PageProps
-type PageProps = {
+// Remove the custom PageProps type that's causing issues
+// Let Next.js infer the correct types
+
+export default async function SingleProductPage({
+  params,
+}: {
   params: { id: string };
-  searchParams: Record<string, string | string[] | undefined>;
-};
-
-// Use the PageProps type with export default
-export default async function SingleProductPage({ params }: PageProps) {
-  // Extract the ID to a local variable
-  const id = params.id;
-
-  // Now pass this ID to your component
+}) {
+  // Simple approach: get the ID and render directly
   return (
     <Suspense fallback={<div>Loading product...</div>}>
-      <ProductContent id={id} />
+      <ProductContent id={params.id} />
     </Suspense>
   );
 }
 
-// Create a separate component for the content
+// Keep your content component
 async function ProductContent({ id }: { id: string }) {
   const product = await fetchSingleProduct(id);
   const { name, image, company, price, description } = product;
