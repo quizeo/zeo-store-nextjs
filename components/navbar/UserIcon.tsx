@@ -4,7 +4,6 @@ import { currentUser, auth } from "@clerk/nextjs/server";
 const UserIcon = async () => {
   // const { userId } = await auth();
   const user = await currentUser();
-  console.log(user);
 
   const profileImage = user?.imageUrl;
 
