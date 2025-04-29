@@ -1,14 +1,13 @@
+import { SubmitButton } from "@/components/form/Button";
+import CheckboxInput from "@/components/form/CheckboxInput";
+import FormContainer from "@/components/form/FormContainer";
 import FormInput from "@/components/form/FormInput";
+import ImageInput from "@/components/form/ImageInput";
+import PriceInput from "@/components/form/PriceInput";
+import TextAreaInput from "@/components/form/TextAreaInput";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { createProductAction } from "@/utils/action";
 import { faker } from "@faker-js/faker";
-
-const createProductAction = async (formData: FormData) => {
-  "use server";
-  const name = formData.get("name") as string;
-  console.log(name);
-};
 
 const CreateProductPage = () => {
   const name = faker.commerce.productName();
@@ -19,17 +18,33 @@ const CreateProductPage = () => {
     <section>
       <h1 className="text-2xl font-semibold mb-8 capitalize">Create Product</h1>
       <div className="border p-8 rounded-md">
-        <form action={createProductAction}>
-          <FormInput
-            type="text"
-            name="name"
-            label="Product name "
-            defaultValue={name}
+        <FormContainer action={createProductAction}>
+          <div className="grid gap-4 md:grid-cols-2 my-4">
+            <FormInput
+              name="name"
+              type="text"
+              placeholder="Product Name"
+              defaultValue={name}
+            />
+            <FormInput
+              name="company"
+              type="text"
+              placeholder="Company Name"
+              defaultValue={company}
+            />
+            <PriceInput />
+            <ImageInput />
+          </div>
+          <TextAreaInput
+            name="description"
+            labelText="product description"
+            defaultValue={description}
           />
-          <Button type="submit" size="lg" variant={"default"}>
-            Submit
-          </Button>
-        </form>
+          <div className="mt-6">
+            <CheckboxInput name="featured" label="featured" />
+          </div>
+          <SubmitButton text="create product" className="mt-8" />
+        </FormContainer>
       </div>
     </section>
   );

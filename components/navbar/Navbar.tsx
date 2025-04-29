@@ -9,7 +9,7 @@ import LinksDropdown from "./LinksDropdown";
 const Navbar = () => {
   return (
     <nav className=" border-b">
-      <Container className="flex flex-col sm:flex-row sm:justify-between sm:items-center flex-wrap py-8">
+      <Container className="flex  sm:flex-row sm:justify-between sm:items-center flex-wrap py-8 gap-y-4 gap-x-4 justify-center">
         <Logo />
         <Suspense>
           <NavSearch />

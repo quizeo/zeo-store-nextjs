@@ -5,17 +5,32 @@ import { formatCurrency } from "@/utils/format";
 import FavoriteToggleButton from "@/components/products/FavoriteToggleButton";
 import AddToCart from "@/components/single-product/AddToCart";
 import ProductRating from "@/components/single-product/ProductRating";
-import { use } from "react";
+import { Suspense } from "react";
 
-const SingleProductPage = async ({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) => {
-  const { id } = use(params);
+// Define proper types for the params
+type ProductPageProps = {
+  params: { id: string };
+};
+
+export default async function SingleProductPage({ params }: ProductPageProps) {
+  // Await the params object before using it
+  const resolvedParams = await params;
+  const id = resolvedParams.id;
+
+  // Wrap content in Suspense for better error handling
+  return (
+    <Suspense fallback={<div>Loading product details...</div>}>
+      <ProductContent id={id} />
+    </Suspense>
+  );
+}
+
+// Separate component for the actual content
+async function ProductContent({ id }: { id: string }) {
   const product = await fetchSingleProduct(id);
   const { name, image, company, price, description } = product;
   const formattedPrice = formatCurrency(price);
+
   return (
     <section>
       <BreadCrumbs name={name} />
@@ -28,7 +43,7 @@ const SingleProductPage = async ({
             fill
             priority
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className=" w-full rounded object-cover "
+            className="w-full rounded object-cover"
           />
         </div>
         {/* product info second col */}
@@ -48,6 +63,4 @@ const SingleProductPage = async ({
       </div>
     </section>
   );
-};
-
-export default SingleProductPage;
+}
