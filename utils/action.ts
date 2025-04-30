@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { imageSchema, productSchema, validateWithZodSchema } from "./schemas";
 import { deleteImage, uploadImage } from "./supabase";
 import { revalidatePath } from "next/cache";
-import { get } from "http";
 
 const getAuthUser = async () => {
   const user = await currentUser();
