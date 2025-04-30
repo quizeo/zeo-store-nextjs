@@ -1,7 +1,7 @@
 export type actionFunction = (
-  prevState: any,
+  prevState: ActionState | null,
   formData: FormData
-) => Promise<{ message: string }>;
+) => Promise<ActionState>;
 
 export type CartItem = {
   productId: string;
@@ -19,4 +19,12 @@ export type CartState = {
   shipping: number;
   tax: number;
   orderTotal: number;
+};
+
+export type DeleteProductState = {
+  productId: string;
+};
+
+export type ActionState = {
+  message: string;
 };

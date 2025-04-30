@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { imageSchema, productSchema, validateWithZodSchema } from "./schemas";
 import { deleteImage, uploadImage } from "./supabase";
 import { revalidatePath } from "next/cache";
+import { ActionState, DeleteProductState } from "@/utils/type";
 
 const getAuthUser = async () => {
   const user = await currentUser();
@@ -65,7 +66,7 @@ export const fetchSingleProduct = async (productId: string) => {
 };
 
 export const createProductAction = async (
-  prevState: any,
+  prevState: ActionState | null,
   formData: FormData
 ): Promise<{ message: string }> => {
   const user = await getAuthUser();
@@ -99,7 +100,7 @@ export const fetchAdminProducts = async () => {
   return products;
 };
 
-export const deleteProductAction = async (prevState: { productId: string }) => {
+export const deleteProductAction = async (prevState: DeleteProductState) => {
   const { productId } = prevState;
 
   try {
@@ -130,7 +131,7 @@ export const fetchAdminProductsDetails = async (productId: string) => {
 };
 
 export const updateProductAction = async (
-  prevState: any,
+  prevState: ActionState | null,
   formData: FormData
 ) => {
   await getAdminUser();
@@ -155,7 +156,7 @@ export const updateProductAction = async (
 };
 
 export const updateProductImageAction = async (
-  prevState: any,
+  prevState: ActionState | null,
   formData: FormData
 ) => {
   await getAdminUser();
