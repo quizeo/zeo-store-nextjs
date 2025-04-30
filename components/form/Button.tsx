@@ -43,3 +43,29 @@ export const SubmitButton = ({
     </Button>
   );
 };
+
+type actionType = "delete" | "edit";
+
+export const IconButton = ({ actionType }: { actionType: actionType }) => {
+  const { pending } = useFormStatus();
+
+  const renderIcon = () => {
+    if (actionType === "delete") {
+      return <LuTrash2 />;
+    } else if (actionType === "edit") {
+      return <LuSquarePen />;
+    }
+    return null;
+  };
+
+  return (
+    <Button
+      type="submit"
+      size="icon"
+      variant="link"
+      className="p-2 cursor-pointer"
+    >
+      {pending ? <ReloadIcon className="animate-spin" /> : renderIcon()}
+    </Button>
+  );
+};
