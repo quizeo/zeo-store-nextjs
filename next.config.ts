@@ -15,6 +15,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "audcepignpggkyjskfsx.supabase.co",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
     ],
   },
   eslint: {

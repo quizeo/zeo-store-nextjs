@@ -22,7 +22,7 @@ const TextAreaInput = ({
         name={name}
         defaultValue={defaultValue}
         placeholder="Type here..."
-        rows={5}
+        rows={8}
         className="leading-loose"
         required
       />
