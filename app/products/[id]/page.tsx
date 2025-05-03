@@ -1,5 +1,5 @@
 import BreadCrumbs from "@/components/single-product/BreadCrumbs";
-import { fetchSingleProduct } from "@/utils/action";
+import { fetchSingleProduct, findExistingReview } from "@/utils/action";
 import Image from "next/image";
 import { formatCurrency } from "@/utils/format";
 import FavoriteToggleButton from "@/components/products/FavoriteToggleButton";
@@ -9,7 +9,7 @@ import { Suspense } from "react";
 import ShareButton from "@/components/single-product/ShareButton";
 import SubmitReview from "@/components/reviews/SubmitReview";
 import ProductReviews from "@/components/reviews/ProductReviews";
-import { Sub } from "@radix-ui/react-dropdown-menu";
+import { auth } from "@clerk/nextjs/server";
 
 // Define proper types for the params
 type ProductPageProps = {
@@ -34,6 +34,8 @@ async function ProductContent({ id }: { id: string }) {
   const product = await fetchSingleProduct(id);
   const { name, image, company, price, description } = product;
   const formattedPrice = formatCurrency(price);
+  const { userId } = await auth();
+  const reviewDoesNotExist = userId && !(await findExistingReview(id, userId));
 
   return (
     <section>
@@ -69,7 +71,8 @@ async function ProductContent({ id }: { id: string }) {
         </div>
       </div>
       <ProductReviews productId={id} />
-      <SubmitReview productId={id} />
+
+      {reviewDoesNotExist && <SubmitReview productId={id} />}
     </section>
   );
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import db from "@/utils/db";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import {
   imageSchema,
@@ -12,7 +12,6 @@ import {
 import { deleteImage, uploadImage } from "./supabase";
 import { revalidatePath } from "next/cache";
 import { ActionState, DeleteProductState } from "@/utils/type";
-import { log } from "console";
 
 const getAuthUser = async () => {
   const user = await currentUser();
@@ -283,9 +282,95 @@ export const fetchProductReviews = async (productId: string) => {
   });
   return reviews;
 };
+export const fetchProductRating = async (productId: string) => {
+  const result = await db.review.groupBy({
+    by: ["productId"],
+    _avg: {
+      rating: true,
+    },
+    _count: {
+      rating: true,
+    },
+    where: {
+      productId,
+    },
+  });
+  return {
+    rating: result[0]?._avg.rating?.toFixed(1) ?? 0,
+    count: result[0]?._count.rating ?? 0,
+  };
+};
 
-export const fetchProductReviewsByUser = async () => {};
+export const fetchProductReviewsByUser = async () => {
+  const user = await getAuthUser();
+  const reviews = await db.review.findMany({
+    where: {
+      clerkId: user.id,
+    },
+    select: {
+      id: true,
+      rating: true,
+      comment: true,
+      product: {
+        select: {
+          image: true,
+          name: true,
+        },
+      },
+    },
+  });
+  return reviews;
+};
 
-export const deleteReviewsAction = async () => {};
-export const findExistingReview = async () => {};
-export const fetchProductRating = async () => {};
+export const deleteReviewAction = async (prevState: { reviewId: string }) => {
+  const { reviewId } = prevState;
+  const user = await getAuthUser();
+  try {
+    await db.review.delete({
+      where: {
+        id: reviewId,
+      },
+    });
+    revalidatePath("/profile/reviews");
+    return { message: "Review deleted successfully" };
+  } catch (error) {
+    return renderError(error);
+  }
+};
+export const findExistingReview = async (userId: string, productId: string) => {
+  return await db.review.findFirst({
+    where: {
+      clerkId: userId,
+      productId,
+    },
+  });
+};
+
+// cart
+
+export const fetchCartItems = async () => {
+  const { userId } = await auth();
+  const cart = await db.cart.findFirst({
+    where: {
+      clerkId: userId ?? "",
+    },
+    select: {
+      numItemsInCart: true,
+    },
+  });
+  return cart?.numItemsInCart || 0;
+};
+
+const fetchProduct = async () => {};
+
+export const fetchOrCreateCart = async () => {};
+
+const updateOrCreateCartItem = async () => {};
+
+export const updateCart = async () => {};
+
+export const addToCartAction = async () => {};
+
+export const removeCartItemAction = async () => {};
+
+export const updateCartItemAction = async () => {};
