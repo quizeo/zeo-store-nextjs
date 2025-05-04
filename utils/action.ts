@@ -250,7 +250,7 @@ export const fetchUserFavorites = async () => {
 };
 
 export const createReviewAction = async (
-  prevState: any,
+  prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> => {
   const user = await getAuthUser();
@@ -482,7 +482,7 @@ export const updateCart = async (cart: Cart) => {
 };
 
 export const addToCartAction = async (
-  prevState: any,
+  prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> => {
   const user = await getAuthUser();
@@ -500,7 +500,7 @@ export const addToCartAction = async (
 };
 
 export const removeCartItemAction = async (
-  previous: any,
+  prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> => {
   const user = await getAuthUser();
