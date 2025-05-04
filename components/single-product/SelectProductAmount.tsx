@@ -43,7 +43,7 @@ const SelectProductAmount = (
           <SelectValue placeholder={amount} />
         </SelectTrigger>
         <SelectContent className="max-h-[300px] overflow-y-auto">
-          {Array.from({ length: 10 }, (_, i) => {
+          {Array.from({ length: 20 }, (_, i) => {
             const selectValue = (i + 1).toString();
 
             return (

@@ -28,3 +28,9 @@ export type DeleteProductState = {
 export type ActionState = {
   message: string;
 };
+
+import { Prisma } from "@prisma/client";
+
+export type CartItemWithProduct = Prisma.CartItemGetPayload<{
+  include: { product: true };
+}>;
