@@ -2,7 +2,6 @@
 const nextConfig = {
   /* config options here */
   typescript: {
-    // This bypasses TypeScript errors during build
     ignoreBuildErrors: true,
   },
   images: {
