@@ -557,7 +557,7 @@ export const updateCartItemAction = async ({
 };
 
 export const createOrderAction = async (
-  _prevState: ActionState | null,
+  prevState: ActionState | null,
   formData: FormData
 ): Promise<ActionState> => {
   const user = await getAuthUser();
